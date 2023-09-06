@@ -41,7 +41,7 @@ func main() {
 			os.Exit(1)
 		}
 		if err := pdflicense.SetMeteredKey(conf.UniofficeApiKey); err != nil {
-			fmt.Println(err, "set unioffice api key")
+			fmt.Println(err, "set unipdf api key")
 			os.Exit(1)
 		}
 	case conf.UniofficeLicenseKey != "":
@@ -54,7 +54,7 @@ func main() {
 			os.Exit(1)
 		}
 		if err := pdflicense.SetLicenseKey(conf.UniofficeLicenseKey, conf.UniofficeCustomerName); err != nil {
-			fmt.Println(err, "set unioffice license key")
+			fmt.Println(err, "set unipdf license key")
 			os.Exit(1)
 		}
 	default:
