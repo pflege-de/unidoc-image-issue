@@ -19,7 +19,7 @@ type config struct {
 
 func main() {
 	var conf config
-	txt, err := cfg.Parse("sample", &conf)
+	txt, err := cfg.Parse("", &conf)
 	if err == cfg.ErrHelpWanted {
 		fmt.Println(txt)
 		os.Exit(0)
@@ -30,10 +30,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	if conf.UniofficeApiKey == "" && conf.UniofficeLicenseKey == "" {
-	}
-
-	// Register!
 	switch {
 	case conf.UniofficeApiKey != "":
 		if err := license.SetMeteredKey(conf.UniofficeApiKey); err != nil {

@@ -1,0 +1,15 @@
+{
+	"p1name": "A. Nonymous", "p1referenz": "REF A",
+	"p2name": "N.N.",
+	"Vorname": "Non",
+	"Nachname": "Nominatur",
+	"Kundennummer": "1234567890",
+	"p1groesse": "XL", 
+	"p1aufzahlung": "0 EUR",
+	"p1aufzahlungskondition": "Foo",
+	"example":"EXAMPLE",
+	"barcode":"1234567890",
+	"checkbox1": "true",
+	"checkbox2": "false",
+	"qrcode":"1234567890ABCDEF"
+}
