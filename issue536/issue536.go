@@ -100,12 +100,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("%v", doc.MergeFields())
+	log.Printf("%v\n", doc.MergeFields())
 	doc.MailMerge(mappings)
 
 	fields := doc.FormFields()
 
 	for _, field := range fields {
+		log.Printf("DocField %s[%s]: %v\n", field.Name(), field.Type().String(), field.PossibleValues())
 		if field.Type() == document.FormFieldTypeCheckBox {
 			// name can be set in word via right click on the checkbox, and setting a value in "bookmark"
 			// value is either "true" or "false" for checkboxes
