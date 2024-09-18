@@ -146,6 +146,8 @@ func main() {
 	}
 	defer completed.Close()
 
+	convert.RegisterFontsFromDirectory("ttf")
+
 	pdfDoc := convert.ConvertToPdf(completed)
 	err = pdfDoc.WriteToFile("issue536.pdf")
 	if err != nil {

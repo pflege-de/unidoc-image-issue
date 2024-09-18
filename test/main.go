@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	cfg "github.com/ardanlabs/conf/v3"
@@ -9,6 +10,18 @@ import (
 	"github.com/unidoc/unioffice/document"
 	"github.com/unidoc/unioffice/document/convert"
 	pdflicense "github.com/unidoc/unipdf/v3/common/license"
+)
+
+const (
+	barcodeWidth      = 3.88
+	barcodeHeight     = 0.74
+	qrCodeWidthHeight = 1.4
+	// {barcode}: 0,74 x 3,88 cm, chose 50x250 to keep dimensions
+	barcodeWidthDimension  = 300
+	barcodeHeightDimension = 50
+	// {qrcode}: 1,4 x 1,4 cm, chose 100x100 to keep dimensions
+	qrWidthDimension  = 100
+	qrHeightDimension = 100
 )
 
 type config struct {
@@ -58,33 +71,43 @@ func main() {
 		os.Exit(1)
 	}
 
-	fn := "./sample.docx"
-	doc, err := document.Open(fn)
+	doc, err := document.Open("crash-test-dummy.docx")
 	if err != nil {
-		fmt.Println("cannot open", fn, "got", err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
-	defer func() {
-		if err := doc.Close(); err != nil {
-			fmt.Println("cannot close", fn, "got", err)
-		}
-	}()
 
-	unstreamed, err := doc.Copy()
+	defer doc.Close()
+
+	// doc has to be copied so the eventually added images of barcodes are also exported to the PDF
+	renewedDoc, err := doc.Copy()
 	if err != nil {
-		fmt.Println("cannot created unstreamed copy of", fn, "for persisting images, got", err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
-	defer func() {
-		if err := unstreamed.Close(); err != nil {
-			fmt.Println("cannot close unstreamed version of", fn, "got", err)
-		}
-	}()
 
-	pdfDoc := convert.ConvertToPdf(unstreamed)
-	on := "./output.pdf"
-	if err := pdfDoc.WriteToFile(on); err != nil {
-		fmt.Println("cannot store pdf on", on, "got", err)
-		os.Exit(1)
+	temporaryDocxFile, err := os.CreateTemp(".", "*.docx")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer os.Remove(temporaryDocxFile.Name())
+	defer temporaryDocxFile.Close()
+
+	err = renewedDoc.SaveToFile(temporaryDocxFile.Name())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer renewedDoc.Close()
+
+	completed, err := document.Open(temporaryDocxFile.Name())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer completed.Close()
+
+	convert.RegisterFontsFromDirectory("ttf")
+
+	pdfDoc := convert.ConvertToPdf(completed)
+	err = pdfDoc.WriteToFile("crash-test-dummy.pdf")
+	if err != nil {
+		log.Fatal(err)
 	}
 }
