@@ -1,9 +1,10 @@
 module github.com/pflege-de/unidoc-bugreport
 
-go 1.20
+go 1.25.0
 
 require (
 	github.com/ardanlabs/conf/v3 v3.1.7
+	github.com/boombuler/barcode v1.0.1
 	github.com/unidoc/unioffice v1.35.0
 	github.com/unidoc/unipdf/v3 v3.61.0
 )
@@ -29,10 +30,10 @@ require (
 	github.com/unidoc/unichart v0.3.0 // indirect
 	github.com/unidoc/unitype v0.4.0 // indirect
 	golang.org/x/crypto v0.25.0 // indirect
-	golang.org/x/image v0.18.0 // indirect
+	golang.org/x/image v0.41.0 // indirect
 	golang.org/x/net v0.27.0 // indirect
 	golang.org/x/sys v0.22.0 // indirect
-	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240716161551-93cc26a95ae9 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
